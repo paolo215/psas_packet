@@ -155,12 +155,16 @@ class Message(object):
             if m is None:
                 continue
             units = m['units']
-
             # from native units to packed representation
-            v = (value - units.get('bias', 0)) / units.get('scaleby', 1.0)
+            if units:
+                v = (value - units.get('bias', 0)) / units.get('scaleby', 1.0)
+                values[m['i']] = Packable(v)
+            # Assumes this is a string
+            else:
+                v = value
+                values[m['i']] = v
 
             # put value in the right place in the list
-            values[m['i']] = Packable(v)
 
         return self.struct.pack(*values)
 
@@ -326,14 +330,15 @@ Message({
     ]
 }),
 Message({
-    'name' : "RV3K_APRS"
+    'name' : "RV3K_APRS",
     'fourcc' : b'APRS',
-    'size': "Fixed"
+    'size': "Fixed",
     'endianness' : '!',
     'members' : [
         {'key': "Latitude",             'stype': "l",   'units': {'mks': "degree", "scaleby": 1e-7}},
         {'key': "Longitude",            'stype': "l",   'units': {'mks': "degree", "scaleby": 1e-7}},
         {'key': "Altitude",             'stype': "L" ,  'units': {'mks': "meter",  "scaleby": 1e-2}},
+        {'key': "Callsign",             'stype' :"5s"},
     ]
     
 
