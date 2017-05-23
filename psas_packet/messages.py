@@ -162,7 +162,7 @@ class Message(object):
             # Assumes this is a string
             else:
                 v = value
-                values[m['i']] = v
+                values[m['i']] = str(v)
 
             # put value in the right place in the list
 
