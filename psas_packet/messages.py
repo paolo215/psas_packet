@@ -155,16 +155,13 @@ class Message(object):
             if m is None:
                 continue
             units = m['units']
-            # from native units to packed representation
-            if units:
+
+            try:
+                # from native units to packed representation
                 v = (value - units.get('bias', 0)) / units.get('scaleby', 1.0)
                 values[m['i']] = Packable(v)
-            # Assumes this is a string
-            else:
-                v = value
-                values[m['i']] = str(v)
-
-            # put value in the right place in the list
+            except TypeError:
+                values[m['i']] = str(value)
 
         return self.struct.pack(*values)
 
