@@ -14,6 +14,7 @@ from psas_packet import messages
 
 ADIS = messages.MESSAGES['ADIS']
 ROLL = messages.MESSAGES['ROLL']
+APRS = messages.MESSAGES['APRS']
 
 class TestDecode(unittest.TestCase):
 
@@ -69,6 +70,15 @@ class TestMessages(unittest.TestCase):
         }
         expect = b'\x08\x13\x00\x00\x00\x00\x00\x14\xfe\xd4\x00\x00\x00\x00\x04$\x00\x00\x00\x00\xff\xdd\x00\x00'
         self.assertEqual(ADIS.encode(data), expect)
+
+    def test_aprs_message(self):
+        data = {'Latitude': 45.5231, 'Longitude': -122.6765, 'Altitude': 500}
+        encode = APRS.encode(data)
+        decode = APRS.decode(encode)
+
+        self.assertAlmostEqual(decode['Latitude'], data['Latitude'], delta=0.1e-1)
+        self.assertAlmostEqual(decode['Longitude'], data['Longitude'], delta=0.1e-1)
+        self.assertAlmostEqual(decode['Altitude'], data['Altitude'], delta=0.1e-1)
 
     def test_roll_message(self):
         data = {'Angle': 1.3, 'Disable': 1}
@@ -236,6 +246,8 @@ typedef struct {
 
         data = SEQN.decode(b'\x01\xf6\xc4\xb8')
         self.assertEqual(data, {'Sequence': 32949432})
+
+
 
 
 if __name__ == '__main__':
