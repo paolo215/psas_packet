@@ -72,13 +72,14 @@ class TestMessages(unittest.TestCase):
         self.assertEqual(ADIS.encode(data), expect)
 
     def test_aprs_message(self):
-        data = {'Latitude': 45.5231, 'Longitude': -122.6765, 'Altitude': 500}
+        data = {'Callsign': "Test1", 'Latitude': 45.5231, 'Longitude': -122.6765, 'Altitude': 500}
         encode = APRS.encode(data)
         decode = APRS.decode(encode)
 
         self.assertAlmostEqual(decode['Latitude'], data['Latitude'], delta=0.1e-1)
         self.assertAlmostEqual(decode['Longitude'], data['Longitude'], delta=0.1e-1)
         self.assertAlmostEqual(decode['Altitude'], data['Altitude'], delta=0.1e-1)
+        self.assertEqual(decode["Callsign"], data["Callsign"])
 
     def test_roll_message(self):
         data = {'Angle': 1.3, 'Disable': 1}
