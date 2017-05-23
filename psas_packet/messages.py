@@ -326,6 +326,19 @@ Message({
     ]
 }),
 Message({
+    'name' : "RV3K_APRS"
+    'fourcc' : b'APRS',
+    'size': "Fixed"
+    'endianness' : '!',
+    'members' : [
+        {'key': "Latitude",             'stype': "l",   'units': {'mks': "degree", "scaleby": 1e-7}},
+        {'key': "Longitude",            'stype': "l",   'units': {'mks': "degree", "scaleby": 1e-7}},
+        {'key': "Altitude",             'stype': "L" ,  'units': {'mks': "meter",  "scaleby": 1e-2}},
+    ]
+    
+
+}),
+Message({
     'name': "State",
     'fourcc': b'VSTE',
     'size': "Fixed",
