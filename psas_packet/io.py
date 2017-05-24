@@ -46,7 +46,7 @@ class Network(object):
         """
 
         # grab bits off the wire
-        buff, addr = self.conn.recvfrom(2048)
+        buff, addr = self.conn.recvfrom(65536)
         timestamp = time.time()
 
         if buff is not None:
